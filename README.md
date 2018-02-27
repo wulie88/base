@@ -5,8 +5,11 @@
 ## 开始
 
 ```bash
+# 构建项目
+elf init -t wulie88/base base-demo
+
 # 安装依赖
-npm install # 或者使用 yarn install
+cnpm install # 或者使用 yarn install
 
 # 开发模式
 npm start
