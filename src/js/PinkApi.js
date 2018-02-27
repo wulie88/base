@@ -66,7 +66,7 @@ PinkApi.goDuiBaNew = function (url) {
 PinkApi.goShare = function (params) {
 	PinkApi.execute(function (api) {
 		PinkJSBridge.callHandler('share', params, function(data) {
-			log('接收到:' + data.msg);
+			console.log('接收到:' + data.msg);
 		});
 	});
 }
@@ -172,7 +172,6 @@ PinkApi.hasJSBridge = function () {
 PinkApi.queue = []
 PinkApi.execute = function (func) {
   if (PinkApi.isReady) {
-    console.log('execute', func)
     func(window['PinkJSBridge'])
   } else {
     PinkApi.queue.push(func)
@@ -184,7 +183,6 @@ pinkJsBridgeReady(function (api) {
   var func = PinkApi.queue.shift();
   while (func) {
     func(window['PinkJSBridge'])
-    console.log('ready execute', func)
     func = PinkApi.queue.shift()
   }
 });
