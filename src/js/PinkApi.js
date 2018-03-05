@@ -131,9 +131,24 @@ PinkApi.configSaveArea = function (color) {
     })
 };
 
+/*
+ios: 没有title会使用旧版，仅支持msg
+android: 没有callback会使用旧版
+ * 使用注意，一定要有title，callback *
+{title: data.message, emotion: data.resultData ? 'happy' : 'cry', cancelBtn: '知道了'}
+title 标题  YES
+desc  说明  NO
+icon  图标地址  NO
+emotion 表情名称: happy cry proud NO
+scene 场景名称，显示在弹框之外的效果，现在只有撒花 firework NO
+cancelBtn 取消按钮文字  NO
+otherBtns 其他按钮文字  NO
+head  头部图片地址  NO
+requrieInput  需要输入  NO
+*/
 PinkApi.alert = function (params) {
     PinkApi.execute(function () {
-      PinkJSBridge.callHandler('alert', params);
+      PinkJSBridge.callHandler('alert', params, function() {});
     })
 };
 

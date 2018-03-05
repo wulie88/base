@@ -41,4 +41,5 @@ preloader.addCompletionListener(function () {
 
   app.init()
 })
+
 preloader.start()
