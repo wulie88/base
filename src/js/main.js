@@ -8,10 +8,21 @@ require('../css/package.scss')
 var Preloader = require('preloader.js'),
 VConsole = require('./lib/vconsole.min.js'),
 Util = require('./lib/util.js'),
-PinkApi = require('./PinkApi.js')
+PinkApi = require('./PinkApi.js'),
+WXApi = require('./WXApi.js')
 
 // use VConsole
 new VConsole()
+
+WXApi.execute(function(wxapi) {
+  wxapi.configShare({
+    title: '分享标题',
+    desc: '分享描述',
+    link: location.href,
+    imgUrl: 'https://img.fenfenriji.com/90/68/AE/Image/61970B89-7CDE-C18A-5BBE-5A6A9DAE75E0.jpg'
+  })
+});
+
 
 var App = function () {}
 App.prototype = {
