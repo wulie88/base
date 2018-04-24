@@ -33,3 +33,38 @@ npm run build
 - `src/css/main.scss`
 
     样式文件
+
+
+## 加入了art-template
+
+请在elf项目运行下面命令安装`art-template-loader`, 支持Webpack打包到项目中。
+
+```bash
+npm install art-template
+npm install art-template-loader --save-dev
+```
+
+在Webpack加入如下配置，支持打包`art`文件。
+
+```
+module.exports = {
+    // ...
+    module: {
+        rules: [{
+            test: /\.jpg$/,
+            loader: "file-loader"
+        }, {
+            test: /\.png$/,
+            loader: "url-loader?mimetype=image/png"
+        }, {
+            test: /\.art$/,
+            loader: "art-template-loader",
+            options: {
+                // art-template options (if necessary)
+                // @see https://github.com/aui/art-template
+            }
+        }]
+    },
+    // ...
+}
+```

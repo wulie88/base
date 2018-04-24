@@ -1,0 +1,19 @@
+    <div class="header"></div>
+
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">粉粉日记普通版</div>
+
+      <!-- List group -->
+      <div class="list-group">
+        {{each items}}
+            {{if $value.subtitle}}
+            <a href="{{$value.uri}}" class="list-group-item">{{$value.title}}<span class="badge">{{$value.subtitle}}</span></a>
+            {{else}}
+            <a href="{{$value.uri}}" class="list-group-item">{{$value.title}}</a>
+            {{/if}}
+        {{/each}}
+
+        <button class="btnAdd">添加</button>
+      </div>
+    </div>    
