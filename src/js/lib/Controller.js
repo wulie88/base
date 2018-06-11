@@ -1,6 +1,8 @@
 var Class = require('./Class.js'),
 AppMixin = require('./AppMixin.js');
 
+require('../lib/toast/toast.css')
+
 var View = Class.create({
 	constructor: function(superView){
 		this.super = superView;
@@ -21,11 +23,22 @@ var View = Class.create({
 	},
 	// 页面卸载
 	destroyed: function () {
+  		this.$root.off('click')
 		console.log('view destroyed')
 	},
 	// 导出为html
 	render: function () {
 		console.log('view render')
+	},
+	// 自动合并渲染
+	autoRender: function () {
+		var that = this
+		if (this.autoRenderTimer) {
+			clearTimeout(this.autoRenderTimer)
+		}
+		this.autoRenderTimer = setTimeout(function () {
+			that.render()
+		}, 100);
 	}
 })
 
@@ -42,6 +55,7 @@ var Controller = Class.create({
 	render: function () {
 		console.log(this.name + ' render')
 		this.router.render(this.tpl(this.data))
+		this.$root = $('.main')
 	}
 })
 

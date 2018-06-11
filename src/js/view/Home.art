@@ -2,18 +2,73 @@
 
     <div class="panel panel-default">
       <!-- Default panel contents -->
-      <div class="panel-heading">粉粉日记普通版</div>
+      <div class="panel-heading">粉粉前端H5项目</div>
 
       <!-- List group -->
       <div class="list-group">
         {{each items}}
+          <div class="list-group-item">
             {{if $value.subtitle}}
-            <a href="{{$value.uri}}" class="list-group-item">{{$value.title}}<span class="badge">{{$value.subtitle}}</span></a>
+              <h4>{{$value.title}}<span class="badge">{{$value.subtitle}}</span></h4>
             {{else}}
-            <a href="{{$value.uri}}" class="list-group-item">{{$value.title}}</a>
+              <h4>{{$value.title}}</h4>
             {{/if}}
-        {{/each}}
+            {{if $value.detail}}
+              <p>{{$value.detail}}</p>
+            {{/if}}
 
-        <button class="btnAdd">添加</button>
+            <div class="env">
+              <div class="env-item">
+                {{if $value.dev}}
+                <a href="{{$value.dev}}" target="_blank">
+                  <h5>开发</h5>
+                  <p>{{$value.dev}}</p>
+                </a>
+                {{else}}
+                  <h5>开发</h5>
+                  <p>不可用</p>
+                {{/if}}
+              </div>
+              <div class="env-item">
+                {{if $value.test}}
+                <a href="{{$value.test}}" target="_blank">
+                  <h5>测试</h5>
+                  <p>{{$value.test}}</p>
+                </a>
+                {{else}}
+                  <h5>测试</h5>
+                  <p>不可用</p>
+                {{/if}}
+              </div>
+              <div class="env-item">
+                {{if $value.prod}}
+                <a href="{{$value.prod}}" target="_blank">
+                  <h5>正式</h5>
+                  <p>{{$value.prod}}</p>
+                </a>
+                {{else}}
+                  <h5>正式</h5>
+                  <p>不可用</p>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        {{/each}}
       </div>
-    </div>    
+
+      <!-- List group -->
+      <div class="list-group">
+          <div class="list-group-item">
+            <a href="http://d.fenfenriji.com/test/jsbridge/open-example/index.html?t=" target="_blank">
+              <h4>jssdk测试</h4>
+              <p>更新到6.1</p>
+            </a>
+          </div>
+          <div class="list-group-item">
+            <a href="http://d.fenfenriji.com/test/jsbridge/index.html" target="_blank">
+              <h4>jsbridge测试</h4>
+              <p>更新到6.1</p>
+            </a>
+          </div>
+      </div>
+    </div>

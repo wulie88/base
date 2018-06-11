@@ -1,0 +1,15 @@
+[
+    {
+        "title":"砍价",
+        "subtitle": "活动",
+        "detail": "本次活动时间：即日起至2018年4月30日。兑换券数量有限，先到先得。",
+        "dev":"http://192.168.1.158:8000/index.html",
+        "test":"http://app.activity.ffrj.net/bargain/dist/index.html?signature=1"
+    },
+    {
+        "title":"可萌街三期",
+        "subtitle": "功能",
+        "detail": "预计5-5开发完成",
+        "dev":"http://192.168.1.57:8000/index.html"
+    }
+]

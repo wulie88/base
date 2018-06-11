@@ -3,15 +3,63 @@ Util = require('./util.js'),
 PinkApi = require('../PinkApi')
 
 var Router = Class.create({
-    constructor: function() {
+    constructor: function(inApp, outApp, render) {
+        this.defaultInApp = inApp
+        this.defaultOutApp = outApp
+        this.render = render
+
+        window.addEventListener('load', this.init.bind(this), false);
+        window.addEventListener('popstate', this.onPopstate.bind(this), false);
+
         this.routes = {};
         this.currentController = null;
+        this.baseUrl = location.href.split('#')[0];
         this.currentUrl = null;
+        this.history = []
     },
     define: function(path, controller) {
-        this.routes[path] = new controller(this) || function(){};
+        this.routes[path] = controller || function(){};
     },
-    execute: function() {
+    execute: function(path, params) {
+        if (this.currentController) {
+            this.currentController.destroyed()
+        }
+
+        if (path in this.routes) {
+            this.currentController = new this.routes[path](this);
+            var controller = this.currentController
+            // 创建
+            controller.created(params)
+            // 渲染
+            controller.render()
+            // 通知
+            controller.mounted()
+        } else {
+            console.error('not match ' + this.currentUrl)
+        }
+    },
+    buildHash: function(path, params) {
+        return '#'+path+(params?'*'+$.param(params):'')
+    },
+    push: function(path, params) {
+        var url = this.baseUrl + this.buildHash(path, params)
+        history.pushState({path: path, params: params}, null, url)
+        this.execute(path, params)
+    },
+    replace: function(path, params) {
+        var url = this.baseUrl + this.buildHash(path, params)
+        history.replaceState({path: path, params: params}, null, url)
+        this.execute(path, params)
+    },
+    onPopstate: function (e) {
+        if (e.state) {
+            var s = e.state
+            this.execute(s.path, s.params)
+        } else {
+            this.init()
+        }
+    },
+    init: function () {
         this.currentUrl = location.hash.slice(1) || '/';
         console.log('execute router for ' + this.currentUrl)
 
@@ -25,49 +73,8 @@ var Router = Class.create({
                 this.currentUrl = this.defaultOutApp
             }
         }
-
-        if (this.currentController) {
-            this.currentController.unload()
-        }
-        var urls = this.currentUrl.split('*'), path = urls[0]
-        if (this.routes[path]) {
-            this.currentController = this.routes[path];
-            var controller = this.currentController
-            if (urls.length > 1) {
-                controller.created(Util.parseQuery(urls[1]))
-            } else {
-                controller.created()
-            }
-            // 渲染
-            controller.render()
-            // 通知
-            controller.mounted()
-        } else {
-            console.error('not match ' + this.currentUrl)
-        }
-    },
-    buildHash: function(path, params) {
-        return '#'+path+(params?'*'+$.param(params):'')
-    },
-    push: function(path, params) {
-        var url = location.href.split('#')[0] + this.buildHash(path, params)
-        // 支持内外打开
-        if (PinkApi.isReady) {
-            PinkApi.openWindow(url)
-        } else {
-            open(url)
-        }
-    },
-    repalce: function(path, params) {
-        location.repalce(location.href.split('#')[0] + this.buildHash(path, params))
-    },
-    init: function(inApp, outApp, render) {
-        this.defaultInApp = inApp
-        this.defaultOutApp = outApp
-        this.render = render
-
-        window.addEventListener('load', this.execute.bind(this), false);
-        window.addEventListener('hashchange', this.execute.bind(this), false);
+        var urls = this.currentUrl.split('*'), path = urls[0], params = urls.length > 1 ? Util.parseQuery(urls[1]) : {};
+        this.execute(path, params)
     }
 })
 

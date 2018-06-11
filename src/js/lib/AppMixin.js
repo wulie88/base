@@ -1,29 +1,35 @@
 
-var OAuth = require('./OAuth.js')
-var oauth = new OAuth()
+Promise = require('promise')
+// var OAuth = require('./OAuth.js')
+// var oauth = new OAuth()
 
-// 初始化uid
-oauth.hasAuthed()
+// // 初始化uid
+// oauth.hasAuthed()
 
 var AppMixin = {
-  baseUrl: 'http://activity.fenfenriji.com/inviter',
-  getResponse: function (uri, callback) {
-    $.ajax({
-      type: 'get',
-      url: AppMixin.baseUrl + uri,
-      data: {uid: oauth.uid},
-      dataType: 'json',
-      success: function (res) {
-        if (callback) {
-          callback(res)
-        }
-      }
-    })
-  },
-  oauth: function(uid, success, error) {
-  	return oauth.auth(uid, success, error)
-  }
+  baseUrl: 'http://test.activity.ffrj.net/distribution/forward',
+  uid: '6767499',
+  get: function (path, params) {
+    return new Promise(function (resolve, reject) {
+      $.ajax({
+        type: 'get',
+        url: AppMixin.baseUrl,
+        data: $.extend({router: path, uid: AppMixin.uid}, params),
+        dataType: 'json',
+        success: function (res) {
+          if (res.code || res.errorMsg) {
+            reject(res)
+            return;
+          }
 
+          resolve(res.data)
+        },
+        error: function () {
+          reject()
+        }
+      })
+    })
+  }
 }
 
 
